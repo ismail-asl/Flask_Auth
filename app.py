@@ -35,6 +35,8 @@ def unprotected():
 def protected():
     return jsonify({'message':"Only token varified user can view this protected view"})
 
+
+
 @app.route('/login')
 def login():
     auth = request.authorization
