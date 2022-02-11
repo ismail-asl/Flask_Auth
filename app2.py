@@ -4,14 +4,16 @@ from flask_sqlalchemy import SQLAlchemy
 import uuid, jwt
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = '725aed1d383e41f0ab788e3f50356666'
+app.config['SECRET_KEY'] = ''
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app2.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -129,8 +131,8 @@ def create_user():
 @token_required
 def update_user(current_user, user_id):
 
-    if not current_user.admin:
-        return jsonify({'msg':"Only admin can view all the users"})
+    # if not current_user.admin:
+    #     return jsonify({'msg':"Only admin can view all the users"})
 
     user = User.query.filter_by(id=user_id).first()
     if user:
